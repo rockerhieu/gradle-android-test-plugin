@@ -10,10 +10,9 @@ buildscript {
 
 apply plugin: 'groovy'
 apply plugin: 'maven'
-apply plugin: 'nexus'
 
 group = 'org.robolectric.gradle'
-version = '0.10.0'
+version = '0.10.1-SNAPSHOT'
 
 dependencies {
   repositories {
@@ -22,7 +21,7 @@ dependencies {
 
   compile gradleApi()
   compile 'org.codehaus.groovy:groovy-all:2.2.+'
-  compile 'com.android.tools.build:gradle:0.11.0'
+  compile 'com.android.tools.build:gradle:0.11.1'
 
   testCompile 'junit:junit:4.10'
   testCompile 'org.easytesting:fest-assert-core:2.0M10'
@@ -33,56 +32,59 @@ install {
     pom.artifactId = 'gradle-android-test-plugin'
   }
 }
+
 uploadArchives {
-  repositories.mavenDeployer {
-    pom.artifactId = 'gradle-android-test-plugin'
-  }
-}
+  repositories {
+    mavenDeployer {
+      repository(url: "$MVN_REPO")
+      pom {
+        artifactId = 'gradle-android-test-plugin'
+        project {
+          name 'Gradle Android Test Plugin'
+          description "A Gradle plugin which enables good 'ol fashioned unit tests for Android builds."
+          url 'https://github.com/robolectric/gradle-android-test-plugin'
+          inceptionYear '2013'
 
-modifyPom {
-  project {
-    name 'Gradle Android Test Plugin'
-    description "A Gradle plugin which enables good 'ol fashioned unit tests for Android builds."
-    url 'https://github.com/robolectric/gradle-android-test-plugin'
-    inceptionYear '2013'
+          scm {
+            url 'https://github.com/robolectric/gradle-android-test-plugin'
+            connection 'scm:git:git://github.com/robolectric/gradle-android-test-plugin.git'
+            developerConnection 'scm:git:ssh://git@github.com/robolectric/gradle-android-test-plugin.git'
+          }
 
-    scm {
-      url 'https://github.com/robolectric/gradle-android-test-plugin'
-      connection 'scm:git:git://github.com/robolectric/gradle-android-test-plugin.git'
-      developerConnection 'scm:git:ssh://git@github.com/robolectric/gradle-android-test-plugin.git'
-    }
+          licenses {
+            license {
+              name 'The Apache Software License, Version 2.0'
+              url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+              distribution 'repo'
+            }
+          }
 
-    licenses {
-      license {
-        name 'The Apache Software License, Version 2.0'
-        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-        distribution 'repo'
+          developers {
+            developer {
+              id 'squaregithub'
+              name 'Square Open Source Development'
+              email 'jobs@squareup.com'
+            }
+
+            developer {
+              id 'mike'
+              name 'Mike Grafton'
+              email 'mike@pivotallabs.com'
+            }
+
+            developer {
+              id 'terry'
+              name 'Terry Chen'
+              email 'terry@pivotallabs.com'
+            }
+          }
+
+          organization {
+            name 'Square, Inc.'
+            url 'http://squareup.com'
+          }
+        }
       }
-    }
-
-    developers {
-      developer {
-        id 'squaregithub'
-        name 'Square Open Source Development'
-        email 'jobs@squareup.com'
-      }
-
-      developer {
-        id 'mike'
-        name 'Mike Grafton'
-        email 'mike@pivotallabs.com'
-      }
-
-      developer {
-        id 'terry'
-        name 'Terry Chen'
-        email 'terry@pivotallabs.com'
-      }
-    }
-
-    organization {
-      name 'Square, Inc.'
-      url 'http://squareup.com'
     }
   }
 }
